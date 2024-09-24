@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Responder Formulário</title>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>{{ formulario.titulo }}</h1>
+    <p>{{ formulario.descricao }}</p>
+
+    <form method="POST">
+        {% for pergunta in perguntas %}
+            <div>
+                <label for="pergunta_{{ pergunta.id }}">{{ pergunta.texto }}</label>
+                {% if pergunta.tipo == 'multipla_escolha' %}
+                    {% for alternativa in pergunta.alternativas %}
+                        <div>
+                            <input type="radio" 
+                                   id="pergunta_{{ pergunta.id }}_{{ alternativa.id }}" 
+                                   name="pergunta_{{ pergunta.id }}" 
+                                   value="{{ alternativa.id }}">
+                            <label for="pergunta_{{ pergunta.id }}_{{ alternativa.id }}">{{ alternativa.texto }}</label>
+                        </div>
+                    {% endfor %}
+                {% elif pergunta.tipo == 'resposta_longa' %}
+                    <textarea name="pergunta_{{ pergunta.id }}" placeholder="Digite sua resposta aqui" required></textarea>
+                {% elif pergunta.tipo == 'resposta_curta' %}
+                    <input type="text" name="pergunta_{{ pergunta.id }}" placeholder="Digite sua resposta aqui" required>
+                {% else %}
+                    <p>Tipo de pergunta desconhecido</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Enviar Respostas</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

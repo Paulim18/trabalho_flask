@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Formulário</title>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Editar Formulário</h1>
+    <form method="POST">
+        <label>Título:</label>
+        <input type="text" name="titulo" value="{{ formulario.titulo }}" maxlength="200" required>
+
+        <label>Descrição:</label>
+        <textarea name="descricao">{{ formulario.descricao }}</textarea>
+
+        <h2>Perguntas</h2>
+        <div id="perguntas-container">
+            {% for pergunta in perguntas %}
+                <div class="pergunta" data-pergunta-id="{{ pergunta.id }}">
+                    <label>Pergunta {{ loop.index }}:</label>
+                    <input type="text" name="pergunta_texto_{{ pergunta.id }}" value="{{ pergunta.texto }}" required>
+                    
+                    <label>Tipo:</label>
+                    <select name="pergunta_tipo_{{ pergunta.id }}" onchange="toggleAlternativas(this)">
+                        <option value="resposta_curta" {% if pergunta.tipo == 'resposta_curta' %}selected{% endif %}>Resposta Curta</option>
+                        <option value="resposta_longa" {% if pergunta.tipo == 'resposta_longa' %}selected{% endif %}>Resposta Longa</option>
+                        <option value="multipla_escolha" {% if pergunta.tipo == 'multipla_escolha' %}selected{% endif %}>Múltipla Escolha</option>
+                        <option value="caixa_selecao" {% if pergunta.tipo == 'caixa_selecao' %}selected{% endif %}>Caixa de Seleção</option>
+                    </select>
+
+                    <!-- Se for múltipla escolha ou caixa de seleção, exibir as alternativas -->
+                    <div class="alternativas" style="display: {% if pergunta.tipo in ['multipla_escolha', 'caixa_selecao'] %}block{% else %}none{% endif %};">
+                        <label>Alternativas:</label>
+                        {% for alternativa in pergunta.alternativas %}
+                            <input type="text" name="alternativa_{{ pergunta.id }}_{{ loop.index }}" value="{{ alternativa.texto }}" placeholder="Alternativa {{ loop.index }}">
+                        {% endfor %}
+                        <button type="button" class="add-alternativa" data-pergunta-id="{{ pergunta.id }}">Adicionar Alternativa</button>
+                    </div>
+
+                    <button type="button" class="remove-pergunta">Remover Pergunta</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" id="add-pergunta">Adicionar Pergunta</button>
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

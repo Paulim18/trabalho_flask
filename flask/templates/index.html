@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulários</title>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script> <!-- Carregar script de validação em um arquivo externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Formulários Criados</h1>
+    <a href="{{ url_for('create_form') }}">Criar Novo Formulário</a>
+    <ul>
+        {% for formulario in formularios %}
+            <li>
+                {{ formulario.titulo }}
+                <span class="actions">
+                    <a href="{{ url_for('edit_form', id=formulario.id) }}">Editar</a> - 
+                    <a href="{{ url_for('responder_formulario', id=formulario.id) }}">Responder</a>
+                    <form action="{{ url_for('remover_formulario', id=formulario.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja remover este formulário?');">Remover</button>
+                    </form>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

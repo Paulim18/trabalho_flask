@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Formulário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <h1>Criar Formulário</h1>
+    <form method="POST">
+        <label>Título:</label>
+        <input type="text" name="titulo" maxlength="200" required>
+        <label>Descrição:</label>
+        <textarea name="descricao"></textarea>
+
+        <div id="perguntas-container"></div>
+
+        <button type="button" id="add-pergunta">Adicionar Pergunta</button>
+        <button type="submit">Criar</button>
+    </form>
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>
