@@ -23,7 +23,6 @@ def index():
     formularios = Formulario.query.all()
     return render_template('index.html', formularios=formularios)
 
-# Adicione o resto do seu código de rotas aqui...
 
 
 @app.route('/create', methods=['GET', 'POST'])
